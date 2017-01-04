@@ -36,7 +36,5 @@ app.get('/',function (request, response){
 //    });
 //});
 
-console.log("Hello World!");
-
 app.listen(4321);
 

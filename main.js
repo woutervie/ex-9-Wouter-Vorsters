@@ -81,6 +81,5 @@ app.post("/weerberichten", function (request, response) {
     });
 });
 
-
 app.listen(4321);
 

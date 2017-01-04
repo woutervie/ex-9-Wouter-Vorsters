@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
  
 mongoose.connect('mongodb://localhost/EX9');
 
-var dalClasses = require("./ClassStorage.js");
+var dalLessons = require("./LessonStorage.js");
 
 var app = express();
 app.use(parser.json());

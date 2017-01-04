@@ -10,13 +10,13 @@ var schema = new mongoose.Schema({
     course: 'string', 
     start_time: 'date', 
     end_time: 'date', 
-    number_students: 'string' }); 
+    number_students: 'string' }); // Aantal verwachte studenten volgens inschrijving vak
 
 var Lesson = mongoose.model('Lesson', schema);
 
 module.exports = {
 
-    listAllProducts: function (callback) {
+    listAllLessons: function (callback) {
         Lesson.find(callback);
     },
     createLesson: function (lesson, callback) {

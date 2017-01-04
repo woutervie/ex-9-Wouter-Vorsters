@@ -1,22 +1,28 @@
-//var dal = require('./storage.js');
-
-var express = require('express'); // eenvoudige webserver in node js
-var parser = require('body-parser'); // extensie op express voor eenvoudig body uit te lezen
+// Requirements
+var express = require('express');
+var parser = require('body-parser');
 var mongoose = require('mongoose');
  
+// Storage
+var dalLessons = require("./LessonStorage.js"); // De lessen zijn gebeurtenissen. Ze zijn doorgegaan op een bepaald tijdstip en werden volgens inschrijving een bepaald aantal studenten verwacht.
+var dalWeerberichten = require("./WeerberichtStorage.js"); // Het weerbericht bevat een dag, temperatuur en uren zonneschijn.
+
+// Validation
+var validateLessons = require("./validateLessons.js");
+var validateWeerberichten = require("./validateWeerberichten.js");
+
 mongoose.connect('mongodb://localhost/EX9');
-
-// Storages
-var dalLessons = require("./LessonStorage.js");
-
-// Validations
-validateLocations = require("./validateLessons.js");
-
 var app = express();
 app.use(parser.json());
 
-app.get('/',function (request, response){
-    response.send("Dit is EX9");
+// LESSONS
+app.get("/lessons", function (request, response) {
+    dalLessons.listAllLessons(function (err, lessons) {
+        if (err) {
+            throw err;
+        }
+        response.send(lessons);
+    });
 });
 
 var Lesson = function (id, course, start_time, end_time, number_students) {
@@ -30,10 +36,11 @@ var Lesson = function (id, course, start_time, end_time, number_students) {
 app.post("/lessons", function (request, response) {
     var lesson = new Lesson(request.body.id, request.body.course, request.body.start_time, request.body.end_time, request.body.number_students);
 
-    var errors = validateLocations.checkvalues(Lesson, "id");
-    if (errors > 0) {
-        return;
-    }
+// GEEFT PROBLEMEN
+//    var errors = validateLessons.checkvalues(lesson, "id");
+//    if (errors > 0) {
+//        return;
+//    }
 
     dalLessons.createLesson(lesson, function (err, lesson) {
         if (err) {
@@ -42,8 +49,18 @@ app.post("/lessons", function (request, response) {
         response.send(lesson);
         console.log("Lesson" + "\n" + JSON.stringify(lesson) + "\n" + "added \n\n");
     });
-});  //validatie in orde, code geeft fouten door en voegt ook geen foute velden toe.
-// Ook weergeven toegevoegde json toegevoegd
+});
+
+// DEVICES
+
+app.get("/lessons", function (request, response) {
+    dalLessons.listAllLessons(function (err, lessons) {
+        if (err) {
+            throw err;
+        }
+        response.send(lessons);
+    });
+});
 
 app.listen(4321);
 

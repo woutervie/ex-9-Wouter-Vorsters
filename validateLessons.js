@@ -7,7 +7,7 @@ module.exports = {
             console.log("'id' moet groter dan 0 zijn.");
             errors++;
         }
-        if (typeof list["id"] !== "number") {
+        if (typeof list["id"] !== "Int32") {
             console.log("'id' moet type Number zijn.");
             errors++;
         }

@@ -15,26 +15,32 @@ app.get('/',function (request, response){
     response.send("Dit is EX9");
 });
 
-//var Book = function(id,name){
-//    this.id = id;
-//    this._id = id;
-//    this.name = name;
-//};
-//var teller = 3;
-//var books = [new Book(1, 'Harry Potter'), new Book(2, 'Blinker')];
-//
-//app.get('/books',function (request, response){
-//    dal.listBooks(function(result){
-//        response.send(result);
-//    })
-//});
-//
-//app.post('/books',function(request, response){
-//    var book = new Book(teller++,request.body.name); // {"name":"The Da Vinci Code"}
-//    dal.insertBooks(book, function(){
-//        response.status(201).send();
-//    });
-//});
+var Lesson = function (id, course, date, start_time, end_time, number_students) {
+    this.id = id;
+    this.course = course;
+    this.date = date;
+    this.start_time = start_time;
+    this.end_time = end_time;
+    this.number_students = number_students;
+};
+
+app.post("/lessons", function (request, response) {
+    var lesson = new Lesson(request.body.id, request.body.course, request.body.date, request.body.start_time, request.body.end_time, request.body.number_students);
+
+//    var errors = validateLocations.checkvalues(Locatie, "locatieid", "naam", "stad", "capaciteit");
+//    if (errors > 0) {
+//        return;
+//    }
+
+    dalLessons.createLesson(lesson, function (err, lesson) {
+        if (err) {
+            console.log(err);
+        }
+        response.send(lesson);
+        console.log("Lesson" + "\n" + JSON.stringify(lesson) + "\n" + "added \n\n");
+    });
+});  //validatie in orde, code geeft fouten door en voegt ook geen foute velden toe.
+// Ook weergeven toegevoegde json toegevoegd
 
 app.listen(4321);
 

@@ -8,15 +8,17 @@ var mongoose = require("mongoose");
 var schema = new mongoose.Schema({ 
     id: 'string', 
     course: 'string', 
-    date: 'string', 
-    start_time: 'string', 
-    end_time: 'string', 
+    start_time: 'date', 
+    end_time: 'date', 
     number_students: 'string' }); 
 
 var Lesson = mongoose.model('Lesson', schema);
 
 module.exports = {
 
+    listAllProducts: function (callback) {
+        Lesson.find(callback);
+    },
     createLesson: function (lesson, callback) {
         Lesson.create(lesson, callback);
     }

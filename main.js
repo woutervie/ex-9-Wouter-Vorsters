@@ -18,14 +18,13 @@ app.get('/',function (request, response){
 var Lesson = function (id, course, date, start_time, end_time, number_students) {
     this.id = id;
     this.course = course;
-    this.date = date;
     this.start_time = start_time;
     this.end_time = end_time;
     this.number_students = number_students;
 };
 
 app.post("/lessons", function (request, response) {
-    var lesson = new Lesson(request.body.id, request.body.course, request.body.date, request.body.start_time, request.body.end_time, request.body.number_students);
+    var lesson = new Lesson(request.body.id, request.body.course, request.body.start_time, request.body.end_time, request.body.number_students);
 
 //    var errors = validateLocations.checkvalues(Locatie, "locatieid", "naam", "stad", "capaciteit");
 //    if (errors > 0) {

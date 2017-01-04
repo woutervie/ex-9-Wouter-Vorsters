@@ -6,7 +6,7 @@ var mongoose = require("mongoose");
 
 // http://mongoosejs.com/docs/models.html
 var schema = new mongoose.Schema({ 
-    id: 'string', 
+    id: 'number', 
     course: 'string', 
     start_time: 'date', 
     end_time: 'date', 

@@ -6,7 +6,11 @@ var mongoose = require('mongoose');
  
 mongoose.connect('mongodb://localhost/EX9');
 
+// Storages
 var dalLessons = require("./LessonStorage.js");
+
+// Validations
+validateLocations = require("./validateLessons.js");
 
 var app = express();
 app.use(parser.json());
@@ -15,7 +19,7 @@ app.get('/',function (request, response){
     response.send("Dit is EX9");
 });
 
-var Lesson = function (id, course, date, start_time, end_time, number_students) {
+var Lesson = function (id, course, start_time, end_time, number_students) {
     this.id = id;
     this.course = course;
     this.start_time = start_time;
@@ -26,10 +30,10 @@ var Lesson = function (id, course, date, start_time, end_time, number_students) 
 app.post("/lessons", function (request, response) {
     var lesson = new Lesson(request.body.id, request.body.course, request.body.start_time, request.body.end_time, request.body.number_students);
 
-//    var errors = validateLocations.checkvalues(Locatie, "locatieid", "naam", "stad", "capaciteit");
-//    if (errors > 0) {
-//        return;
-//    }
+    var errors = validateLocations.checkvalues(Lesson, "id");
+    if (errors > 0) {
+        return;
+    }
 
     dalLessons.createLesson(lesson, function (err, lesson) {
         if (err) {

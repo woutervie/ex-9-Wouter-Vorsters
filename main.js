@@ -5,11 +5,11 @@ var mongoose = require('mongoose');
  
 // Storage
 var dalLessons = require("./LessonStorage.js"); // De lessen zijn gebeurtenissen. Ze zijn doorgegaan op een bepaald tijdstip en werden volgens inschrijving een bepaald aantal studenten verwacht.
-var dalWeerberichten = require("./WeerberichtStorage.js"); // Het weerbericht bevat een dag, temperatuur en uren zonneschijn.
+var dalWeerberichten = require("./WeerberichtStorage.js"); // Het weerbericht bevat een dag en uren zonneschijn.
 
 // Validation
-var validateLessons = require("./validateLessons.js");
-var validateWeerberichten = require("./validateWeerberichten.js");
+//var validateLessons = require("./validateLessons.js");
+//var validateWeerberichten = require("./validateWeerberichten.js");
 
 mongoose.connect('mongodb://localhost/EX9');
 var app = express();
@@ -51,16 +51,36 @@ app.post("/lessons", function (request, response) {
     });
 });
 
-// DEVICES
+// WEERBERICHTEN
 
-app.get("/lessons", function (request, response) {
-    dalLessons.listAllLessons(function (err, lessons) {
+app.get("/weerberichten", function (request, response) {
+    dalWeerberichten.listAllWeerberichten(function (err, lessons) {
         if (err) {
             throw err;
         }
         response.send(lessons);
     });
 });
+
+
+
+var Weerbericht = function (dag, uren_zon) {
+    this.dag = dag;
+    this.uren_zon = uren_zon;
+};
+
+app.post("/weerberichten", function (request, response) {
+    var weerbericht = new Weerbericht(request.body.dag, request.body.uren_zon);
+
+    dalWeerberichten.createWeerbericht(weerbericht, function (err, lesson) {
+        if (err) {
+            console.log(err);
+        }
+        response.send(weerbericht);
+        console.log("Weerbericht" + "\n" + JSON.stringify(weerbericht) + "\n" + "added \n\n");
+    });
+});
+
 
 app.listen(4321);
 
